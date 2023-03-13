@@ -16,6 +16,7 @@ class Panel extends JFrame {
 
 
     public Panel() {
+
         button.addActionListener(new TimerActionListener());
 
         result.setText("Waiting....");
@@ -27,6 +28,7 @@ class Panel extends JFrame {
 
         // Set the size of the frame and make it visible
         setSize(200, 100);
+
         setVisible(true);
     }
 
@@ -38,8 +40,6 @@ public class Main {
     public static void main(String[] args) {
         new Panel();
     }
-
-
 }
 
 
@@ -57,6 +57,16 @@ class TimerActionListener implements ActionListener {
         return (finalVelocity * hangtime) / 2;
     }
 
+    //https://stackoverflow.com/questions/2808535/round-a-double-to-2-decimal-places
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof JButton) {
@@ -68,8 +78,8 @@ class TimerActionListener implements ActionListener {
             } else {
                 button.setText("Start");
                 Main.sharedVars.setStart(System.currentTimeMillis());
-                System.out.println("Fell " + Math.abs(getDistance(Main.sharedVars.getStart(), Main.sharedVars.getStop())) + " meters");
-                Panel.result.setText("Fell " + Math.abs(getDistance(Main.sharedVars.getStart(), Main.sharedVars.getStop())) + " meters");
+                System.out.println("Fell " + round(Math.abs(getDistance(Main.sharedVars.getStart(), Main.sharedVars.getStop())), 3) + " meters");
+                Panel.result.setText("Fell " + round(Math.abs(getDistance(Main.sharedVars.getStart(), Main.sharedVars.getStop())), 3) + " meters");
             }
         }
     }
@@ -96,3 +106,4 @@ class SharedVars {
         this.stop = stop;
     }
 }
+
